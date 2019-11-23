@@ -13,17 +13,26 @@ void pushX(int num);
 void setLanguage();
 void printTitleScreen();
 void characterSelect();
-void setScreenResolution();
-
+void setScreenResolution(int x, int y);
+void printLine(int x);
+void printCharacter(int n);
+void clearEntity();
 
 // Game config
 string language;
+struct character {
+	string name;
+	string hp;
+	string mana;
+	string attack;
+	string def;
+};
 
 int main() {
-	setScreenResolution();
+	setScreenResolution(960, 720);
 	setlocale(LC_ALL, "spanish");
-	setLanguage();
-	printTitleScreen();
+	//setLanguage();
+	//printTitleScreen();
 	characterSelect();
 }
 
@@ -42,13 +51,15 @@ void pushX(int num) {
 }
 
 // Game functions
-void setScreenResolution() {
+void setScreenResolution(int x, int y) {
 	HWND hwnd = GetConsoleWindow();
-	if (hwnd != NULL) { MoveWindow(hwnd, 1000, 500, 960, 720, TRUE); }
+	if (hwnd != NULL) { MoveWindow(hwnd, 1000, 500, x, y, TRUE); }
 }
 
 void printTitleScreen() {
 	int option = 0;
+	bool over = false;
+	int start = 0;
 	for (int j = 0; j < 9; j++) {
 	system("CLS");
 	pushX(j);
@@ -61,6 +72,7 @@ void printTitleScreen() {
 	cout << "||_//  || ||    || ||___ || \\|| \\_)) ||  \\\\_//  || \\|| || || ||__|     \\\\__ || \\\\ || || \\_)) ||  ||" << endl;
 	Sleep(100);
 	}
+	
 }
 
 void setLanguage() {
@@ -125,33 +137,200 @@ void setLanguage() {
 	}
 }
 
+void clearEntity() {
+	for (int i = 3; i < 25; i++) {
+		gotoxy(0, i);
+		cout << "                                                                                                                                ";
+	}
+}
+
 void characterSelect() {
 	system("cls");
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
-	cout << "                       /    |" << endl;
-	cout << "                      /     |" << endl;
-	cout << "                     /      |" << endl;
-	cout << "                    /       |" << endl;
-	cout << "               ___,'        |" << endl;
-	cout << "             <  -'          :" << endl;
-	cout << "              `-.__..--'``-,_\\_" << endl;
-	cout << "                 | / ` :,.)_`>" << endl;
-	cout << "                 :/ `     ||/)" << endl;
-	cout << "                 (_.).__,-` |\\" << endl;
-	cout << "                 /( `.``   `| :" << endl;
-	cout << "                 \\'`-.)  `  ; ;" << endl;
-	cout << "                 | `       /-<" << endl;
-	cout << "                 |     `  /   `." << endl;
-	cout << " ,-_-..____     /|  `    :__..-'\\" << endl;
-	cout << "/,'-.__\\\\  ``-./ :`      ;       \\" << endl;
-	cout << "`\\ `\\  `\\\\  \\ :  (   `  /  ,   `. \\" << endl;
-	cout << "  \\` \\   \\\\   |  | `   :  :     .\\ \\" << endl;
-	cout << "   \\ `\\_  ))  :  ;     |  |      ): :" << endl;
-	cout << "  (`-.-'\\ ||  |\\ \\   ` ;  ;       | |" << endl;
-	cout << "   \\-_   `;;._   ( `  /  /_       | |" << endl;
-	cout << "    `-.-.// ,'`-._\\__/_,'         ; |" << endl;
-	cout << "       \\:: :     /     `     ,   /  |" << endl;
-	cout << "        || |    (        ,' /   /   |" << endl;
-	cout << "        ||                ,'   /    |" << endl;
+	setScreenResolution(838, 600);
+	printLine(100);
+	cout << endl;
+	printLine(100);
+	bool end = false;
+	int n = 0;
+	printCharacter(n);
+	while (end != true) {
+		if (_kbhit()) {
+			char tecla = _getch();
+			if (tecla == 'd') {
+				n++;
+				if (n > 4) {
+					n = 4;
+				}
+				cout << n;
+			}
+			if (tecla == 'a') {
+				n--;
+				if (n < 0){
+					n = 0;
+				}
+					cout << n;
+			}
+			if (tecla == 'k') {
+				end = true;
+			}
+			clearEntity();
+			gotoxy(0, 3);
+			printCharacter(n);
+		}
+	}
+}
+
+void printLine(int x) {
+	x -= 2;
+	cout << "+";
+	for (int i = 0; i < x; i++) {
+		cout << "-";
+	}
+	cout << "+" << endl;
+}
+
+void printCharacter(int n) {
+	int x = 0;
+	if (n == 0) {
+		x = 37;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+		pushX(x);
+		cout << "      _,." << endl;
+		pushX(x);
+		cout << "    ,` -.)" << endl;
+		pushX(x);
+		cout << "   ( _/-\\\\-._" << endl;
+		pushX(x);
+		cout << "  /,|`--._,-^|            ," << endl;
+		pushX(x);
+		cout << "  \\_| |`-._/||          ,'|" << endl;
+		pushX(x);
+		cout << "    |  `-, / |         /  /" << endl;
+		pushX(x);
+		cout << "    |     || |        /  /" << endl;
+		pushX(x);
+		cout << "     `r-._||/   __   /  /  " << endl;
+		pushX(x);
+		cout << " __,-<_     )`-/  `./  /   " << endl;
+		pushX(x);
+		cout << "'  \\   `---'   \\   /  /    " << endl;
+		pushX(x);
+		cout << "    |           |./  /   " << endl;
+		pushX(x);
+		cout << "    /           //  /       " << endl;
+		pushX(x);
+		cout << "\\_/' \\         |/  /      " << endl;
+		pushX(x);
+		cout << " |    |   _,^-'/  /      " << endl;
+		pushX(x);
+		cout << " |    , ``  (\\/  /_" << endl;
+		pushX(x);
+		cout << "  \\,.->._    \\X-=/^" << endl;
+		pushX(x);
+		cout << "  (  /   `-._//^`  " << endl;
+		pushX(x);
+		cout << "   `Y-.____(__}" << endl;
+		pushX(x);
+		cout << "   |     {__)" << endl;
+		pushX(x);
+		cout << "          ()" << endl;
+	}
+	else if (n == 1) {
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
+		x = 26;
+		pushX(x);
+		cout << "                       /    |" << endl;
+		pushX(x);
+		cout << "                      /     |" << endl;
+		pushX(x);
+		cout << "                     /      |" << endl;
+		pushX(x);
+		cout << "                    /       |" << endl;
+		pushX(x);
+		cout << "               ___,'        |" << endl;
+		pushX(x);
+		cout << "             <  -'          :" << endl;
+		pushX(x);
+		cout << "              `-.__..--'``-,_\\_" << endl;
+		pushX(x);
+		cout << "                 | / ` :,.)_`>" << endl;
+		pushX(x);
+		cout << "                 :/ `     ||/)" << endl;
+		pushX(x);
+		cout << "                 (_.).__,-` |\\" << endl;
+		pushX(x);
+		cout << "                 /( `.``   `| :" << endl;
+		pushX(x);
+		cout << "                 \\'`-.)  `  ; ;" << endl;
+		pushX(x);
+		cout << "                 | `       /-<" << endl;
+		pushX(x);
+		cout << "                 |     `  /   `." << endl;
+		pushX(x);
+		cout << " ,-_-..____     /|  `    :__..-'\\" << endl;
+		pushX(x);
+		cout << "/,'-.__\\\\  ``-./ :`      ;       \\" << endl;
+		pushX(x);
+		cout << "`\\ `\\  `\\\\  \\ :  (   `  /  ,   `. \\" << endl;
+		pushX(x);
+		cout << "  \\` \\   \\\\   |  | `   :  :     .\\ \\" << endl;
+		pushX(x);
+		cout << "   \\ `\\_  ))  :  ;     |  |      ): :" << endl;
+		pushX(x);
+		cout << "  (`-.-'\\ ||  |\\ \\   ` ;  ;       | |" << endl;
+		pushX(x);
+		cout << "   \\-_   `;;._   ( `  /  /_       | |" << endl;
+		pushX(x);
+		cout << "    `-.-.// ,'`-._\\__/_,'         ; |" << endl;
+		pushX(x);
+	}
+	else if (n == 2) {
+		x = 26;
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 13);
+		pushX(x);
+		cout << "                       \\ \\" << endl;
+		pushX(x);
+		cout << "                        \\.\\" << endl;
+		pushX(x);
+		cout << "                         \\.\\" << endl;
+		pushX(x);
+		cout << "                          \\.\\  " << endl;
+		pushX(x);
+		cout << "                 _         \\.\\/)" << endl;
+		pushX(x);
+		cout << "            _ _-' ')__     (\\.\\/)" << endl;
+		pushX(x);
+		cout << "           /       /  \\.'`'-\\/)\\\\" << endl;
+		pushX(x);
+		cout << "           \\__ ,.-'(_  Y    (_\\.\\)" << endl;
+		pushX(x);
+		cout << "            / <     ,\\  \\    ,\\\\.\\\\" << endl;
+		pushX(x);
+		cout << "            \\_ \\ _. /y(_|    : |\\.\\|" << endl;
+		pushX(x);
+		cout << "             _\\_\\\\   |       : | \\.\\" << endl;
+		pushX(x);
+		cout << "            (   `'-._>/ )     \\|  \\.\\" << endl;
+		pushX(x);
+		cout << "            \\         `:=.    (\\   \\.\\" << endl;
+		pushX(x);
+		cout << "             \\_      (    `--._)`--'\\.\\=7" << endl;
+		pushX(x);
+		cout << "            _/|\\_    \\-._     `-:_ /```-3    " << endl;
+		pushX(x);
+		cout << "           /  |  `-   \\  t--._    Y    _3 " << endl;
+		pushX(x);
+		cout << "        ,-'   |       /  |   /``'-.\\--T x\\" << endl;
+		pushX(x);
+		cout << "      _/     _(    ,./  /   (          \\ x\\" << endl;
+		pushX(x);
+		cout << "         _.-/  \\  /    <     \\          \\ x\\" << endl;
+		pushX(x);
+		cout << "      <`'  /   |\/      `-.   :          \\_x\\" << endl;
+		pushX(x);
+		cout << "       \\  /    |           `. |" << endl;
+		pushX(x);
+		cout << "        \\_|    /             `." << endl;
+	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 }
