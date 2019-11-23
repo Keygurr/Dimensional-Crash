@@ -21,7 +21,7 @@ void clearLine();
 
 // Game config
 string language;
-bool charUnlocked_1 = false;
+bool charUnlocked_1 = true;
 bool charUnlocked_2 = true;
 struct character {
 	string name;
@@ -53,6 +53,10 @@ void clearEntity() {
 		gotoxy(0, i);
 		cout << "                                                                                                                                ";
 	}
+}
+
+void clearTextBox() {
+
 }
 
 void pushX(int num) {
@@ -149,7 +153,7 @@ void setLanguage() {
 
 void clearLine() {
 	gotoxy(0, 1);
-	cout << "                                                                                                                                ";
+	cout << "                                                                                            ";
 	gotoxy(0, 1);
 }
 
@@ -158,10 +162,16 @@ void characterSelect() {
 	int n = 0;
 	setScreenResolution(838, 600);
 	printLine(100);
-	cout << endl;
+	pushX(45); 
+	cout << "KNIGHT" << endl;
 	printLine(100);
 	bool end = false;
 	printCharacter(n);
+	gotoxy(0, 24);
+	printLine(100);
+	cout << "Knight Lore";
+	gotoxy(0, 33);
+	printLine(100);
 	while (end != true) {
 		if (_kbhit()) {
 			char tecla = _getch();
@@ -169,15 +179,9 @@ void characterSelect() {
 				n++;
 				if (charUnlocked_1 != true && n == 2) {
 					n = 1;
-				}
-				else if (charUnlocked_1 == true && n == 2) {
-					n = 2;
-				}
-				else if (charUnlocked_2 != true && n == 3) {
-					n = 2;
-				}
-				else if (charUnlocked_2 == true && (n == 3 || n == 2)) {
-					n = 3;
+					if (charUnlocked_2 == true) {
+						n = 3;
+					}
 				}
 				if (n > 3) {
 					n = 3;
@@ -186,10 +190,9 @@ void characterSelect() {
 			}
 			if (tecla == 'a') {
 				n--;
-				if (charUnlocked_1 != true && n == 3 )
+				if (charUnlocked_1 != true && n == 2) {
 					n = 1;
-				else if (charUnlocked_1 == true && n == 3)
-						n = 2;
+				}
 				if (n < 0){
 					n = 0;
 				}
@@ -199,7 +202,7 @@ void characterSelect() {
 				end = true;
 			}
 			clearLine();
-			pushX(26);
+			pushX(45);
 			switch (n) {
 			case 0:
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
@@ -224,6 +227,18 @@ void characterSelect() {
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 			clearEntity();
 			printCharacter(n);
+			gotoxy(0, 24);
+			printLine(100);
+			if (n == 0) {
+				cout << "Knight Lore";
+			} else if (n == 1) {
+				cout << "Wizard Lore";
+			}
+			else if (n == 2) {
+				cout << "Samurai Lore";
+			}
+			gotoxy(0, 33);
+			printLine(100);
 		}
 	}
 }
