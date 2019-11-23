@@ -17,9 +17,12 @@ void setScreenResolution(int x, int y);
 void printLine(int x);
 void printCharacter(int n);
 void clearEntity();
+void clearLine();
 
 // Game config
 string language;
+bool charUnlocked_1 = false;
+bool charUnlocked_2 = true;
 struct character {
 	string name;
 	string hp;
@@ -43,6 +46,13 @@ void gotoxy(int x, int y) {
 	dwPos.X = x;
 	dwPos.Y = y;
 	SetConsoleCursorPosition(hcon, dwPos);
+}
+
+void clearEntity() {
+	for (int i = 3; i < 25; i++) {
+		gotoxy(0, i);
+		cout << "                                                                                                                                ";
+	}
 }
 
 void pushX(int num) {
@@ -137,34 +147,49 @@ void setLanguage() {
 	}
 }
 
-void clearEntity() {
-	for (int i = 3; i < 25; i++) {
-		gotoxy(0, i);
-		cout << "                                                                                                                                ";
-	}
+void clearLine() {
+	gotoxy(0, 1);
+	cout << "                                                                                                                                ";
+	gotoxy(0, 1);
 }
 
 void characterSelect() {
 	system("cls");
+	int n = 0;
 	setScreenResolution(838, 600);
 	printLine(100);
 	cout << endl;
 	printLine(100);
 	bool end = false;
-	int n = 0;
 	printCharacter(n);
 	while (end != true) {
 		if (_kbhit()) {
 			char tecla = _getch();
 			if (tecla == 'd') {
 				n++;
-				if (n > 4) {
-					n = 4;
+				if (charUnlocked_1 != true && n == 2) {
+					n = 1;
+				}
+				else if (charUnlocked_1 == true && n == 2) {
+					n = 2;
+				}
+				else if (charUnlocked_2 != true && n == 3) {
+					n = 2;
+				}
+				else if (charUnlocked_2 == true && (n == 3 || n == 2)) {
+					n = 3;
+				}
+				if (n > 3) {
+					n = 3;
 				}
 				cout << n;
 			}
 			if (tecla == 'a') {
 				n--;
+				if (charUnlocked_1 != true && n == 3 )
+					n = 1;
+				else if (charUnlocked_1 == true && n == 3)
+						n = 2;
 				if (n < 0){
 					n = 0;
 				}
@@ -173,8 +198,31 @@ void characterSelect() {
 			if (tecla == 'k') {
 				end = true;
 			}
+			clearLine();
+			pushX(26);
+			switch (n) {
+			case 0:
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+				cout << "KNIGHT";
+				break;
+			case 1:
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
+				cout << "WIZARD";
+				break;
+			case 2:
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 13);
+				cout << "SAMURAI";
+				break;
+			case 3:
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
+				cout << "HOLD";
+				break;
+			default:
+				cout << "???";
+				break;
+			}
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 			clearEntity();
-			gotoxy(0, 3);
 			printCharacter(n);
 		}
 	}
@@ -190,6 +238,7 @@ void printLine(int x) {
 }
 
 void printCharacter(int n) {
+	gotoxy(0, 3);
 	int x = 0;
 	if (n == 0) {
 		x = 37;
